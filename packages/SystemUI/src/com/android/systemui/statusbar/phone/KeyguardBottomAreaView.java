@@ -64,6 +64,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.internal.util.aospextended.fod.FodUtils;
 import com.android.internal.widget.LockPatternUtils;
 import com.android.keyguard.KeyguardUpdateMonitor;
 import com.android.keyguard.KeyguardUpdateMonitorCallback;
@@ -267,6 +268,7 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
         mAccessibilityController = Dependency.get(AccessibilityController.class);
         mActivityIntentHelper = new ActivityIntentHelper(getContext());
         updateLeftAffordance();
+        updateRightAffordance();
         updateIndicationAreaPadding();
     }
 
@@ -429,6 +431,10 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
     private boolean hasInDisplayFingerprint() {
         return mContext.getPackageManager().hasSystemFeature(LineageContextConstants.Features.FOD)
                 && mIsFingerprintRunning;
+    }
+
+    private boolean hasInDisplayFingerprint() {
+        return FodUtils.hasFodSupport(mContext) && mIsFingerprintRunning;
     }
 
     public boolean isLeftVoiceAssist() {
@@ -739,6 +745,12 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
                     inflateCameraPreview();
                     updateCameraVisibility();
                     updateLeftAffordance();
+                }
+                @Override
+                public void onBiometricRunningStateChanged(boolean running,
+                            BiometricSourceType biometricSourceType) {
+                    mIsFingerprintRunning = running;
+                    updateIndicationAreaPadding();
                 }
                 @Override
                 public void onBiometricRunningStateChanged(boolean running,
