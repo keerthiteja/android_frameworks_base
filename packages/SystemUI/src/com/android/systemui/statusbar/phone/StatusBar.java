@@ -1922,6 +1922,7 @@ public class StatusBar extends SystemUI implements DemoMode,
         if (!isExpanded) {
             mRemoteInputManager.onPanelCollapsed();
         }
+        ((StatusBarIconControllerImpl) mIconController).onPanelExpanded(isExpanded);
     }
 
     public ViewGroup getNotificationScrollLayout() {
@@ -3974,6 +3975,8 @@ public class StatusBar extends SystemUI implements DemoMode,
         } else {
             Log.d("StatusBar", "updateKeyguardState -> AmbientIndicationContainer null");
         }
+
+        ((StatusBarIconControllerImpl) mIconController).setKeyguardShowing(mState == StatusBarState.KEYGUARD);
         Trace.endSection();
     }
 
