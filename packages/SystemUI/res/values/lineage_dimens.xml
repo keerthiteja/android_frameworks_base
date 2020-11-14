@@ -48,4 +48,8 @@
 
     <!-- Recognizing fingerprint animation -->
     <dimen name="fod_animation_size">280dp</dimen>
+
+    <!-- Screenrecord -->
+    <dimen name="screenrecord_dot_size">48dp</dimen>
+
 </resources>
