@@ -20,6 +20,7 @@ import static com.android.systemui.util.InjectionInflationController.VIEW_CONTEX
 import static com.android.systemui.util.Utils.useQsMediaPlayer;
 
 import android.annotation.NonNull;
+import android.provider.Settings;
 import android.annotation.Nullable;
 import android.content.ComponentName;
 import android.content.Context;
@@ -679,10 +680,14 @@ public class QSPanel extends LinearLayout implements Tunable, Callback, Brightne
         }
     }
 
-    private boolean shouldUseHorizontalLayout() {
+    public boolean shouldUseHorizontalLayout() {
         return mUsingMediaPlayer && mMediaHost.getVisible()
                 && getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    boolean isMediaHostVisible() {
+        return mMediaHost.getVisible();
     }
 
     protected void reAttachMediaHost() {
