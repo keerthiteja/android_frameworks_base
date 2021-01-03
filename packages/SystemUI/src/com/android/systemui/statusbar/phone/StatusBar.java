@@ -70,10 +70,13 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.om.IOverlayManager;
 import android.content.pm.IPackageManager;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
+import android.content.om.OverlayInfo;
+import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.graphics.Point;
 import android.graphics.PointF;
@@ -94,6 +97,8 @@ import android.os.SystemClock;
 import android.os.SystemProperties;
 import android.os.Trace;
 import android.os.UserHandle;
+import android.os.RemoteException;
+import android.os.ServiceManager;
 import android.os.UserManager;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -255,6 +260,8 @@ import javax.inject.Named;
 import javax.inject.Provider;
 
 import dagger.Lazy;
+
+import com.android.internal.util.fork.ThemesUtils;
 
 public class StatusBar extends SystemUI implements DemoMode,
         ActivityStarter, KeyguardStateController.Callback,
@@ -654,6 +661,7 @@ public class StatusBar extends SystemUI implements DemoMode,
     private final LifecycleRegistry mLifecycle = new LifecycleRegistry(this);
     protected final BatteryController mBatteryController;
     protected boolean mPanelExpanded;
+    private IOverlayManager mOverlayManager;
     private UiModeManager mUiModeManager;
     protected boolean mIsKeyguard;
     private LogMaker mStatusBarStateLog;
@@ -882,6 +890,8 @@ public class StatusBar extends SystemUI implements DemoMode,
     public void start() {
         mScreenLifecycle.addObserver(mScreenObserver);
         mWakefulnessLifecycle.addObserver(mWakefulnessObserver);
+        mOverlayManager = IOverlayManager.Stub.asInterface(
+                ServiceManager.getService(Context.OVERLAY_SERVICE));
         mUiModeManager = mContext.getSystemService(UiModeManager.class);
         mBypassHeadsUpNotifier.setUp();
         mBubbleController.setExpandListener(mBubbleExpandListener);
@@ -2073,14 +2083,19 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.PULSE_ON_NEW_TRACKS),
                     false, this, UserHandle.USER_ALL);
+
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.SWITCH_STYLE),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
         public void onChange(boolean selfChange, Uri uri) {
-            /*if (uri.equals(Settings.System.getUriFor(
-                    Settings.System.XXX))) {
-                doXXX();
-            }*/
+            if (uri.equals(Settings.System.getUriFor(
+                    Settings.System.SWITCH_STYLE))) {
+                stockSwitchStyle();
+                updateSwitchStyle();
+            }
         }
 
         public void update() {
@@ -3734,6 +3749,16 @@ public class StatusBar extends SystemUI implements DemoMode,
             mContext.setTheme(themeResId);
             mConfigurationController.notifyThemeChanged();
         }
+    }
+
+    public void updateSwitchStyle() {
+        int switchStyle = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.SWITCH_STYLE, 2, mLockscreenUserManager.getCurrentUserId());
+        ThemesUtils.updateSwitchStyle(mOverlayManager, mLockscreenUserManager.getCurrentUserId(), switchStyle);
+    }
+
+    public void stockSwitchStyle() {
+        ThemesUtils.stockSwitchStyle(mOverlayManager, mLockscreenUserManager.getCurrentUserId());
     }
 
     private void updateDozingState() {
