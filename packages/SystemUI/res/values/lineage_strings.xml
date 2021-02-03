@@ -122,4 +122,7 @@
 
     <!-- Tux clock -->
     <string name="clock_title_tux" translatable="false">Tux</string>
+
+    <!-- Scrolling Screenshot string -->
+    <string name="scrollss">Scroll</string>
 </resources>
