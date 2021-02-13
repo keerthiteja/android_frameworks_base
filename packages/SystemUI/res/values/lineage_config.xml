@@ -37,4 +37,8 @@
 
     <!-- Whether to show VoWiFi icon in the status bar -->
     <bool name="config_display_vowifi">true</bool>
+
+    <!-- Show the network traffic monitor on statusbar even if the device has a notch -->
+    <bool name="config_forceShowNetworkTrafficOnStatusBar">false</bool>
+
 </resources>
