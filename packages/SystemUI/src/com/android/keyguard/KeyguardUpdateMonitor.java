@@ -2591,6 +2591,11 @@ public class KeyguardUpdateMonitor implements TrustManager.TrustListener, Dumpab
             return true;
         }
 
+        // change in battery overheat
+        if (current.health != old.health) {
+            return true;
+        }
+
         // change in VOOC charging while plugged in
         if (nowPluggedIn && current.voocChargeStatus != old.voocChargeStatus) {
             return true;
