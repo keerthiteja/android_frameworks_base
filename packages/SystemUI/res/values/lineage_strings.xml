@@ -122,4 +122,7 @@
 
     <!-- Tux clock -->
     <string name="clock_title_tux" translatable="false">Tux</string>
+
+     <!-- Biometric Dialog - Use Face -->
+    <string name="biometric_dialog_button_use_face">Use Face</string>
 </resources>
