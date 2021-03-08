@@ -626,7 +626,6 @@ public abstract class AuthBiometricView extends LinearLayout {
             mCallback.onAction(Callback.ACTION_USE_FACE);
         });
 
-        if (this instanceof AuthBiometricFingerprintView) {
             if (!Utils.canAuthenticateWithFace(mContext, mUserId)){
                 mUseFaceButton.setVisibility(View.GONE);
             }
