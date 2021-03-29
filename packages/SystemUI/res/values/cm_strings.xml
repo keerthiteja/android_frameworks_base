@@ -2,7 +2,7 @@
 <!--
 /**
  * Copyright (c) 2015, The CyanogenMod Project
- * Copyright (c) 2017-2019, The LineageOS Project
+ * Copyright (c) 2017-2021 The LineageOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -130,5 +130,8 @@
     <!-- Reboot/Recovery/PowerOff QS tile -->
     <string name="quick_settings_reboot_label">Reboot</string>
     <string name="quick_settings_reboot_recovery_label">Recovery</string>
-    <string name="quick_settings_poweroff_label">Power off</string>
+    <string name="quick_settings_poweroff_label">Power off</string>    
+
+    <!-- Label for current user in power menu options dialog -->
+    <string name="global_action_current_user">Current</string>
 </resources>
