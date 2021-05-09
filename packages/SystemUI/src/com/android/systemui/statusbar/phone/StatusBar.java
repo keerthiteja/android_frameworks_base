@@ -2084,10 +2084,6 @@ public class StatusBar extends SystemUI implements DemoMode,
                     Settings.System.PULSE_ON_NEW_TRACKS),
                     false, this, UserHandle.USER_ALL);
 
-            mContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.LOCKSCREEN_MEDIA_BLUR),
-                    false, this, UserHandle.USER_ALL);
-
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.SWITCH_STYLE),
                     false, this, UserHandle.USER_ALL);
@@ -2104,9 +2100,6 @@ public class StatusBar extends SystemUI implements DemoMode,
 
         public void update() {
             setPulseOnNewTracks();
-            if (mMediaManager != null) {
-                mMediaManager.setLockScreenMediaBlurLevel();
-            }
         }
 
     private void setPulseOnNewTracks() {
