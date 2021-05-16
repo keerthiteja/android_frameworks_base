@@ -26,7 +26,6 @@ import com.android.systemui.Dependency;
 import com.android.systemui.R;
 import com.android.systemui.statusbar.policy.NetworkController;
 import com.android.systemui.statusbar.policy.NetworkController.IconState;
-import com.android.systemui.statusbar.policy.NetworkController.ImsIconState;
 import com.android.systemui.statusbar.policy.NetworkControllerImpl;
 import com.android.systemui.statusbar.policy.SecurityController;
 import com.android.systemui.tuner.TunerService;
@@ -46,7 +45,6 @@ public class StatusBarSignalPolicy implements NetworkControllerImpl.SignalCallba
     private final String mSlotWifi;
     private final String mSlotEthernet;
     private final String mSlotVpn;
-    private final String mSlotIms;
 
     private final Context mContext;
     private final StatusBarIconController mIconController;
@@ -77,8 +75,6 @@ public class StatusBarSignalPolicy implements NetworkControllerImpl.SignalCallba
         mSlotEthernet = mContext.getString(com.android.internal.R.string.status_bar_ethernet);
         mSlotVpn      = mContext.getString(com.android.internal.R.string.status_bar_vpn);
         mActivityEnabled = mContext.getResources().getBoolean(R.bool.config_showActivity);
-
-        mSlotIms      = mContext.getString(com.android.internal.R.string.status_bar_ims);
 
         mIconController = iconController;
         mNetworkController = Dependency.get(NetworkController.class);
@@ -304,11 +300,6 @@ public class StatusBarSignalPolicy implements NetworkControllerImpl.SignalCallba
     @Override
     public void setMobileDataEnabled(boolean enabled) {
         // Don't care.
-    }
-
-    @Override
-    public void setImsIcon(ImsIconState icon) {
-        mIconController.setImsIcon(mSlotIms, icon);
     }
 
     private static abstract class SignalIconState {
